@@ -7,7 +7,7 @@
 
 1. Podfile 文件添加如下代码
 
-		pod 'HyphenateFullSDK', :git => 'https://github.com/easemob/hyphenate-full-cocoapods.git'
+		pod 'HyphenateFullSDK'
 		
 2. 使用时, 需要引入头文件, 在 pch 预编译文件中, 引入头文件如下:
 
