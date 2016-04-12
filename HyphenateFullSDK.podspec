@@ -1,11 +1,11 @@
 Pod::Spec.new do |spec|
   spec.name         = 'HyphenateFullSDK'
   spec.version      = '3.1.1'
-  spec.license      = 'MIT'
+  spec.license 	     = { :type => 'MIT', :file => 'LICENSE' }
   spec.summary      = 'An Objective-C client for IM service'
   spec.homepage     = 'https://github.com/easemob/hyphenate-full-cocoapods'
-  spec.author       = {'Hyphenate Inc.' => 'admin@hyphenate.com'}
-  spec.source       =  {:git => 'https://github.com/easemob/hyphenate-full-cocoapods.git', :tag => spec.version.to_s }
+  spec.author       = {'Hyphenate Inc.' => 'admin@easemob.com'}
+  spec.source       =  {:git => 'https://github.com/lizilong1989/hyphenate-full-cocoapods.git', :tag => spec.version.to_s }
   spec.source_files = "HyphenateFullSDK/**/*.{h}"
   spec.platform     = :ios, '6.0'
   spec.requires_arc = true
