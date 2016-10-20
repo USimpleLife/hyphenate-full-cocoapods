@@ -7,17 +7,18 @@
  *
  *  \~english
  *  @header IEMCallManager.h
- *  @abstract This protocol defines the operations of real time voice/video call
+ *  @abstract This protocol defined the operations of real time voice/video call
  *  @author Hyphenate
  *  @version 3.00
  */
 
 #import <Foundation/Foundation.h>
 
-#import "EMCallSession.h"
+#import "EMCallOptions.h"
 #import "EMCallManagerDelegate.h"
 
 @class EMError;
+@class EMCallStream;
 
 /*!
  *  \~chinese 
@@ -50,20 +51,6 @@
 
 /*!
  *  \~chinese
- *  添加回调代理
- *
- *  @param aDelegate  要添加的代理
- *
- *  \~english
- *  Add delegate
- *
- *  @param aDelegate  Delegate
- *
- */
-- (void)addDelegate:(id<EMCallManagerDelegate>)aDelegate;
-
-/*!
- *  \~chinese
  *  移除回调代理
  *
  *  @param aDelegate  要移除的代理
@@ -75,42 +62,35 @@
  */
 - (void)removeDelegate:(id<EMCallManagerDelegate>)aDelegate;
 
-#pragma mark - Answer and End
+#pragma mark - Options
 
 /*!
- *  \~chinese 
- *  接收方同意通话请求
+ *  \~chinese
+ *  设置设置项
  *
- *  @param  aSessionId 通话ID
- *
- *  @result 错误信息
+ *  @param aOptions  设置项
  *
  *  \~english
- *  Recipient answer the incoming call
+ *  Set setting options
  *
- *  @param  aSessionId Session Id
- *
- *  @result Error
+ *  @param aOptions  Setting options
  */
-- (EMError *)answerIncomingCall:(NSString *)aSessionId;
+- (void)setCallOptions:(EMCallOptions *)aOptions;
 
 /*!
- *  \~chinese 
- *  结束通话
+ *  \~chinese
+ *  获取设置项
  *
- *  @param aSessionId 通话的ID
- *  @param aReason    结束原因
+ *  @result 设置项
  *
  *  \~english
- *  End the call
+ *  Get setting options
  *
- *  @param aSessionId Session ID
- *  @param aReason    End reason
+ *  @result Setting options
  */
-- (void)endCall:(NSString *)aSessionId
-         reason:(EMCallEndReason)aReason;
+- (EMCallOptions *)getCallOptions;
 
-#pragma mark - voice
+#pragma mark - Make and Answer and End
 
 /*!
  *  \~chinese
@@ -131,34 +111,6 @@
 
 /*!
  *  \~chinese
- *  暂停语音数据传输
- *
- *  @param aSessionId   通话的ID
- *
- *  \~english
- *  Pause voice streaming
- *
- *  @param aSessionId   Session ID
- */
-- (void)pauseVoiceWithSession:(NSString *)aSessionId error:(EMError**)pError;
-
-/*!
- *  \~chinese
- *  恢复语音数据传输
- *
- *  @param aSessionId   通话的ID
- *
- *  \~english
- *  Resume voice streaming
- *
- *  @param aSessionId   Session ID
- */
-- (void)resumeVoiceWithSession:(NSString *)aSessionId error:(EMError**)pError;
-
-#pragma mark - video
-
-/*!
- *  \~chinese
  *  发起视频会话
  *
  *  @param aUsername        被呼叫的用户（不能与自己通话）
@@ -174,6 +126,76 @@
 - (void)startVideoCall:(NSString *)aUsername
             completion:(void (^)(EMCallSession *aCallSession, EMError *aError))aCompletionBlock;
 
+
+
+/*!
+ *  \~chinese
+ *  接收方同意通话请求
+ *
+ *  @param  aCallId     通话ID
+ *
+ *  @result 错误信息
+ *
+ *  \~english
+ *  Receiver answer the call
+ *
+ *  @param  aCallId     Call Id
+ *  @param  aRemoteName Remote name
+ *
+ *  @result Error
+ */
+- (EMError *)answerIncomingCall:(NSString *)aCallId;
+
+/*!
+ *  \~chinese
+ *  结束通话
+ *
+ *  @param aCallId     通话的ID
+ *  @param aReason     结束原因
+ *
+ *  @result 错误
+ *
+ *  \~english
+ *  End the call
+ *
+ *  @param aCallId     Call ID
+ *  @param aReason     End reason
+ *
+ *  @result Error
+ */
+- (EMError *)endCall:(NSString *)aCallId
+              reason:(EMCallEndReason)aReason;
+
+#pragma mark - EM_DEPRECATED_IOS 3.2.0
+
+/*!
+ *  \~chinese
+ *  暂停语音数据传输
+ *
+ *  @param aSessionId   通话的ID
+ *
+ *  \~english
+ *  Pause voice streaming
+ *
+ *  @param aSessionId   Session ID
+ */
+- (void)pauseVoiceWithSession:(NSString *)aSessionId
+                        error:(EMError**)pError EM_DEPRECATED_IOS(3_1_0, 3_1_5, "Use -[EMCallSession pauseVoice]");
+
+/*!
+ *  \~chinese
+ *  恢复语音数据传输
+ *
+ *  @param aSessionId   通话的ID
+ *
+ *  \~english
+ *  Resume voice streaming
+ *
+ *  @param aSessionId   Session ID
+ */
+- (void)resumeVoiceWithSession:(NSString *)aSessionId
+                         error:(EMError**)pError EM_DEPRECATED_IOS(3_1_0, 3_1_5, "Use -[EMCallSession resumeVoice]");
+
 /*!
  *  \~chinese
  *  暂停视频图像数据传输
@@ -185,7 +207,8 @@
  *
  *  @param aSessionId   Session ID
  */
-- (void)pauseVideoWithSession:(NSString *)aSessionId error:(EMError**)pError;
+- (void)pauseVideoWithSession:(NSString *)aSessionId
+                        error:(EMError**)pError EM_DEPRECATED_IOS(3_1_0, 3_1_5, "Use -[EMCallSession pauseVideo]");
 
 /*!
  *  \~chinese
@@ -198,7 +221,8 @@
  *
  *  @param aSessionId   Session ID
  */
-- (void)resumeVideoWithSession:(NSString *)aSessionId error:(EMError**)pError;
+- (void)resumeVideoWithSession:(NSString *)aSessionId
+                         error:(EMError**)pError EM_DEPRECATED_IOS(3_1_0, 3_1_5, "Use -[EMCallSession resumeVideo]");
 
 /*!
  *  \~chinese
@@ -211,12 +235,13 @@
  *
  *  @param isAdaptive   YES is enable, NO is disable
  */
-- (void)enableAdaptiveBirateStreaming:(BOOL)isAdaptive;
+- (void)enableAdaptiveBirateStreaming:(BOOL)isAdaptive EM_DEPRECATED_IOS(3_1_0, 3_1_5, "Use -[EMCallOptions videoKbps]");
 
-#pragma mark - Deprecated methods
+
+#pragma mark - EM_DEPRECATED_IOS < 3.2.0
 
 /*!
- *  \~chinese 
+ *  \~chinese
  *  发起语音会话
  *
  *  @param aUsername  被呼叫的用户（不能与自己通话）
@@ -283,7 +308,7 @@
 - (void)resumeVoiceTransfer:(NSString *)aSessionId __deprecated_msg("Use -resumeVoiceWithSession:error:");
 
 /*!
- *  \~chinese 
+ *  \~chinese
  *  发起视频会话
  *
  *  @param aUsername  被呼叫的用户（不能与自己通话）
@@ -366,5 +391,6 @@
  *  @param aFlag   YES is enable, NO is disable
  */
 - (void)setVideoAdaptive:(BOOL)aFlag  __deprecated_msg("Use -enableAdaptiveBirateStreaming:");
+
 
 @end
